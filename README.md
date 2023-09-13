@@ -10,4 +10,4 @@ Treat the texts of a file with many lines.
 # How to run
 - Place the file you want to process in the same folder as the "script.sh" file.
 - Run the script file in a command line.
-```./script.sh```
+- ```./script.sh```
