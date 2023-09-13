@@ -1,4 +1,4 @@
-# edit-text-files-with-bash
+# Edit your text files using bash
 Clean up and/or process the texts in a file with very large texts.
 
 # Input text
