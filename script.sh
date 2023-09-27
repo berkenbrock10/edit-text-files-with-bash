@@ -11,28 +11,36 @@ if [ ! -f "$input_file" ]; then
   exit 1
 fi
 
-# Initialize an empty list
-list=()
+# Output directory
+output_dir="output_files"
 
 # Log message when the process starts
-echo "Processing the file '$input_file'..."
+#echo "Processing the file '$input_file'..."
 
 # Loop to process each line of the file
 while IFS= read -r line; do
-  # You can change this part according to your preference
-  # Remove "GET " from the beginning and " HTTP/1.1" from the end of the line
-  object=$(echo "$line" | sed 's/^"GET //;s/ HTTP\/1.1"$/"/')
+  # Determines the name of the output file based on the contents of the line
+  if [[ $line == *"/autocompletes/popular?"* ]]; then
+    output_file="$output_dir/autocompletes-popular.csv"
+  elif [[ $line == *"/navigates?"* ]]; then
+    output_file="$output_dir/navigates.csv"
+  elif [[ $line == *"/search?"* ]]; then
+    output_file="$output_dir/search.csv"
+  elif [[ $line == *"/autocompletes?"* ]]; then
+    output_file="$output_dir/autocompletes-all.csv"
+  elif [[ $line == *"/clicks?"* ]]; then
+    output_file="$output_dir/clicks.csv"
+  elif [[ $line == *"/hotsites?"* ]]; then
+    output_file="$output_dir/hotsites.csv"
+  else
+    # If the line does not match any of the above standards, ignore it
+    continue
+  fi
 
-  # Add the object to the list
-  list+=("$object")
+  # Add the line to the output file
+  echo "$line" >> "$output_file"
 
-  # Log message for each processed line
-  echo "Processed line: $object"
 done < "$input_file"
 
-# Write the list to a new output file
-printf "%s\n" "${list[@]}" > "$output_file"
-
-# Log message when the process finishes
-echo "Processing completed. Items in the list: ${#list[@]}"
-echo "List of objects written to '$output_file'"
+# Success Log
+echo "Separation completed. Output files are in the '$output_dir' directory."
